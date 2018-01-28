@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   fractol.h                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nicola <nicola@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/13 15:05:45 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/28 03:10:26 by nicola           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef FRACTOL_H
 # define FRACTOL_H
@@ -39,14 +28,23 @@ typedef struct		s_mlx_struct
 	t_img_prm		*ip;
 }					t_mlx_data;
 
+typedef struct		s_cfg_struct
+{
+	float			x_zoom;
+	float			y_zoom;
+	float			x_center;
+	float			Y_center;
+}					t_cfg;
+
 typedef struct      s_data_struct
 {
+	t_str			*st;
 	t_mlx_data		*md;
 	char			*name;
 }					t_data;
 
-# define WIDTH		800
-# define HEIGHT		600
+# define WIDTH		1024
+# define HEIGHT		512
 
 
 # define BLACK		0x00000000
@@ -60,22 +58,12 @@ typedef struct      s_data_struct
 /*
 ** main.c
 */
-t_mlx_data			*mlx_data_init_return(t_mlx_data *md);
 
 /*
 ** call_keys.c
 */
 int		call_keys(int keycode, t_mlx_data *md);
 void	call_keys_general(int keycode, t_mlx_data *md);
-/*
-** call_keys_utils.c
-*/
-/*
-** call_keys_color.c
-*/
-/*
-** input.c
-*/
 /*
 ** mlx_utils.c
 */

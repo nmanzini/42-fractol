@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nicola <nicola@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/08 16:13:29 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/28 03:38:27 by nicola           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "fractol.h"
 
@@ -22,37 +11,22 @@ t_mlx_data	*mlx_data_init_return(t_mlx_data *md)
 	md->width = WIDTH;
 	md->height = HEIGHT;
 	md->mlx = mlx_init();
-	md->win = mlx_new_window(md->mlx, md->width, md->height, "fdf nmanzini");
+	md->win = mlx_new_window(md->mlx, md->width, md->height, "fractol");
 	make_image(md);
 	return (md);
 }
 
-// For each pixel (x, y) on the screen, do:
-// {
-//     zx = scaled x coordinate of pixel (scaled to lie in the Mandelbrot X scale (-2.5, 1))
-//        // zx represents the real part of z
-//     zy = scaled y coordinate of pixel (scaled to lie in the Mandelbrot Y scale (-1, 1))
-//        // zy represents the imaginary part of z 
+t_data *init_data(t_data *dt)
+{
+	static t_data		actual_dt;
+	static t_mlx_data	*md;
 
-//     iteration = 0
-//     max_iteration = 1000
-  
-//     while (zx*zx + zy*zy < 4  AND  iteration < max_iteration) 
-//     {
-//         xtemp = zx*zx - zy*zy
-//         zy = 2*zx*zy  + cy 
-//         zx = xtemp + cx
-	
-//         iteration = iteration + 1 
-//     }
-  
-//     if (iteration == max_iteration)
-//         return black;
-//     else
-//         return iteration;
-// }
+	dt = &actual_dt;
+	dt->md = mlx_data_init_return(md);
+	return (dt);
+}
 
-void	Julia(t_mlx_data *md)
+void	Julia(t_data *dt)
 {
 	int Px;
 	int Py;
@@ -64,37 +38,35 @@ void	Julia(t_mlx_data *md)
 	float x_temp;
 	float y;
 
+	ft_putendl("Julia");
 	Px = -1;
-	while (++Px < md->width)
+	while (++Px < dt->md->width)
 	{
 		Py = -1;
-		while (++Py < md->height)
+		while (++Py < dt->md->height)
 		{
-			x0 = (Px * 4.0 / (float)md->width) - 2.5;
-			y0 = (Py * 3.0 / (float)md->height) - 1.5;
-			x =  (Px * 4.0 / (float)md->width) - 2.5;
-			y =  (Py * 3.0 / (float)md->height) - 1.5;
+			x0 = -0.5;
+			y0 = -0.5;
+			x =  (Px * 2.0 / (float)dt->md->width) - 1;
+			y =  (Py * 2.0 / (float)dt->md->height) - 1;
 			iter = 0;
 			max_iter = 1000;
 
 			while (x * x + y * y < 4  &&  iter < max_iter) 
 			{
-				x_temp = x * x - y * y + x0;
+				x_temp = x * x - y * y;
 				y = 2 * x * y + y0;
-				x = x_temp;
+				x = x_temp + x0;
 				iter++;
 			}
-			if (iter >500)
-				fill_pixel(md, Px, Py, BLACK);
-			else
-				fill_pixel(md, Px, Py, WHITE);
+			fill_pixel(dt->md, Px, Py, iter * 256*256 + iter * 256 + iter);
 		}
 	}
-	mlx_put_image_to_window(md->mlx, md->win, md->ip->image, 0, 0);
+	mlx_put_image_to_window(dt->md->mlx, dt->md->win, dt->md->ip->image, 0, 0);
 }
 
 
-void 	Mandelbrot(t_mlx_data	*md)
+void 	Mandelbrot(t_data *dt)
 {
 	int Px;
 	int Py;
@@ -106,15 +78,15 @@ void 	Mandelbrot(t_mlx_data	*md)
 	float x_temp;
 	float y;
 
-
+	ft_putendl("Mandelbrot");
 	Px = -1;
-	while (++Px < md->width)
+	while (++Px < dt->md->width)
 	{
 		Py = -1;
-		while (++Py < md->height)
+		while (++Py < dt->md->height)
 		{
-			x0 = (Px * 4 / (float)md->width) - 2.5;
-			y0 = (Py * 3 / (float)md->height) - 1.5;
+			x0 = (Px * 4.0 / (float)dt->md->width) - 2.5;
+			y0 = (Py * 3.0 / (float)dt->md->height) - 1.5;
 			x = 0.0;
 			y = 0.0;
 			iter = 0;
@@ -126,24 +98,20 @@ void 	Mandelbrot(t_mlx_data	*md)
 				x = x_temp;
 				iter++;
 			}
-
-			if (iter < 100)
-				fill_pixel(md, Px, Py, WHITE);
-			else
-				fill_pixel(md, Px, Py, BLACK);
+			fill_pixel(dt->md, Px, Py, iter * 256*256 + iter * 256 + iter);
 		}
 	}
-	mlx_put_image_to_window(md->mlx, md->win, md->ip->image, 0, 0);
+	mlx_put_image_to_window(dt->md->mlx, dt->md->win, dt->md->ip->image, 0, 0);
 }
 
 int			main(int ac, char **av)
 {
-	static	t_mlx_data	*md;
+	static t_data	*dt;
 
-	md = mlx_data_init_return(md);
+	dt = init_data(dt);
 
-	Julia(md);
-	mlx_key_hook(md->win, call_keys, md);
-	mlx_loop(md->mlx);
+	Mandelbrot(dt);
+	mlx_key_hook(dt->md->win, call_keys, dt->md);
+	mlx_loop(dt->md->mlx);
 	return (0);
 }
