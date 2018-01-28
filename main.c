@@ -6,7 +6,7 @@
 /*   By: nicola <nicola@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/08 16:13:29 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/28 03:36:43 by nicola           ###   ########.fr       */
+/*   Updated: 2018/01/28 03:38:27 by nicola           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ void	Julia(t_mlx_data *md)
 	float x;
 	float x_temp;
 	float y;
-
 
 	Px = -1;
 	while (++Px < md->width)
