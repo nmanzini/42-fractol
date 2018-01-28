@@ -1,13 +1,13 @@
 
 #include "fractol.h"
 
-void	fill_pixel(t_mlx_data *md, int x, int y, unsigned int color)
+void	fill_pixel(t_mlx *md, int x, int y, unsigned int color)
 {
 	if (x > 0 && x < md->width && y > 0 && y < md->height)
 		md->ip->lst[y * md->width + x] = color;
 }
 
-void	img_square(t_mlx_data *md, unsigned int color)
+void	img_square(t_mlx *md, unsigned int color)
 {
 	int i;
 	int j;
@@ -26,7 +26,7 @@ void	img_square(t_mlx_data *md, unsigned int color)
 	mlx_put_image_to_window(md->mlx, md->win, md->ip->image, 0, 0);
 }
 
-void	make_image(t_mlx_data *md)
+void	make_image(t_mlx *md)
 {
 	int		bpp;
 	int		s_l;
