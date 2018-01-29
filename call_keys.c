@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 14:38:43 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/29 16:01:05 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/29 17:50:16 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	call_keys_position(int keycode, t_data *dt)
 
 void	call_keys_zoom(int keycode, t_data *dt)
 {
-	if (keycode == 27) 				// -
+	if (keycode == 27) 					// -
 	{
 		ft_putendl("-		");
 		dt->cf->x_zoom *= 1.33;
@@ -46,7 +46,7 @@ void	call_keys_zoom(int keycode, t_data *dt)
 		dt->cf->x_move *= 1.33;
 		dt->cf->y_move *= 1.33;
 	}
-	else if (keycode == 24)			// +
+	else if (keycode == 24)				// +
 	{
 		ft_putendl("=		");
 		dt->cf->x_zoom *= 0.66;
@@ -58,7 +58,7 @@ void	call_keys_zoom(int keycode, t_data *dt)
 
 void	call_keys_type(int keycode, t_data *dt)
 {
-	if (keycode == 3) 				// F
+	if (keycode == 3) 					// F
 	{
 		ft_putendl("F		");
 		if (dt->cf->flag == 0)
@@ -83,14 +83,14 @@ void	call_keys_type(int keycode, t_data *dt)
 		{
 			ft_putendl("Mandelbrot");
 			dt->cf->fractal = Mandelbrot;
-			dt->cf->fractal = 0;
+			dt->cf->flag = 0;
 		}
 	}
 }
 
 void	call_keys_reset(int keycode, t_data *dt)
 {
-	if (keycode == 15) 				// R
+	if (keycode == 15) 					// R
 	{
 		ft_putendl("R		");
 		cfg_setup(dt->cf);
@@ -99,7 +99,7 @@ void	call_keys_reset(int keycode, t_data *dt)
 
 void	call_keys_mode(int keycode, t_data *dt)
 {
-	if (keycode == 46) 				// M
+	if (keycode == 46) 					// M
 	{
 		ft_putstr("M		");
 		if (dt->cf->mode == 'z')

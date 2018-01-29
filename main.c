@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 14:34:26 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/29 16:11:01 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/29 18:28:33 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	cfg_setup(t_cfg *cf)
 	cf->mode = 'z';
 	cf->x_Julia = 0.285;
 	cf->y_Julia = 0.01;
-	cf->max_iter = 1000;
+	cf->max_iter = 500;
 
 }
 
@@ -75,14 +75,54 @@ t_data	*init_data(t_data *dt)
 
 void	fractal_color(t_data *dt, int x, int y, int iter)
 {
-	if (iter <250)
-		fill_pixel(dt->md, x, y, iter);
-	else if (iter <500)
-		fill_pixel(dt->md, x, y, iter * 256);
-	else if (iter <750)
-		fill_pixel(dt->md, x, y, iter * 256 * 256);
-	else
-		fill_pixel(dt->md, x, y, BLACK);
+	int				slices;
+	float			max_local;
+	int				i;
+	int				multiplier;
+	unsigned int	color;
+
+	multiplier = 1;
+
+	slices = dt->cf->max_iter / 20;
+	max_local = dt->cf->max_iter / (float)slices;
+
+
+	color = BLACK;
+
+	i = 0;
+	while (i < slices)
+	{
+		multiplier *= 256;
+		if (iter > max_local * i)
+		{
+			color = iter - (max_local * i);
+			color = color / max_local * multiplier ;
+		}
+		i++;
+		if (slices % 3 == 0)
+			multiplier = 1; 
+	}
+	fill_pixel(dt->md, x, y, color);
+}
+
+void	fractal_colora(t_data *dt, int x, int y, int iter)
+{
+	int				slices;
+	int				max_local;
+	unsigned int	multiplier;
+	unsigned int	color;
+
+	multiplier = 255 * 255;
+
+	slices = dt->cf->max_iter / 20;
+	max_local = dt->cf->max_iter / slices;		// 500 / 10 = 50
+	// color = BLACK;
+
+	// if (iter != dt->cf->max_iter)
+	// {
+		color = (unsigned int)(((iter % max_local) / max_local) * multiplier) ;
+	// }
+	fill_pixel(dt->md, x, y, color);
 }
 
 void	Julia(t_data *dt)

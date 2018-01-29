@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 14:34:10 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/29 16:02:10 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/29 17:42:29 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ typedef struct      s_data_struct
 	char			*name;
 }					t_data;
 
-# define WIDTH		800
-# define HEIGHT		400
+# define WIDTH		1600
+# define HEIGHT		800
 
 # define BLACK		0x00000000
 # define WHITE		0x00FFFFFF
