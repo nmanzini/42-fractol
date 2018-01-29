@@ -21,12 +21,13 @@ t_cfg	*cfg_data_init(t_cfg *cf)
 	static t_cfg	actual_cfg;
 
 	cf = &actual_cfg;
-	cf->x_zoom = 2;
-	cf->y_zoom = 2;
+	cf->x_zoom = 4;
+	cf->y_zoom = cf->x_zoom / WIDTH * HEIGHT;
 	cf->x_center = 0;
 	cf->y_center = 0;
-	cf->x_move = 0.3;
-	cf->y_move = 0.3;
+	cf->x_move = WIDTH / 4;
+	cf->y_move = HEIGHT / 4;
+	cf->fractal = Julia;
 	return (cf);
 }
 
@@ -63,10 +64,14 @@ void	Julia(t_data *dt)
 		{
 			x0 = -0.5;
 			y0 = -0.5;
-			x =  (Px * 2.0 / (float)dt->md->width) - 1;
-			y =  (Py * 2.0 / (float)dt->md->height) - 1;
+			x = Px - dt->md->width / 2.0;
+			y = Py - dt->md->height / 2.0;
+			x = x / (float)dt->md->width * dt->cf->x_zoom; 
+			y = y / (float)dt->md->height * dt->cf->y_zoom;
+			x = x + dt->cf->x_center / (float)dt->md->width;
+			y = y + dt->cf->y_center / (float)dt->md->height;
 			iter = 0;
-			max_iter = 1000;
+			max_iter = 255;
 
 			while (x * x + y * y < 4  &&  iter < max_iter) 
 			{
@@ -75,7 +80,7 @@ void	Julia(t_data *dt)
 				x = x_temp + x0;
 				iter++;
 			}
-			fill_pixel(dt->md, Px, Py, iter * 256*256 + iter * 256 + iter);
+			fill_pixel(dt->md, Px, Py, iter );
 		}
 	}
 }
@@ -99,10 +104,12 @@ void 	Mandelbrot(t_data *dt)
 		Py = -1;
 		while (++Py < dt->md->height)
 		{
-			x0 = (Px - dt->md->width / 2.0 )/ (float)dt->md->width * dt->cf->x_zoom + dt->cf->x_center; 
-			y0 = (Py - dt->md->height / 2.0) / (float)dt->md->height * dt->cf->y_zoom + dt->cf->y_center;
-			// x0 = (Px * dt->cf->x_zoom / (float)dt->md->width) +  dt->cf->x_center;
-			// y0 = (Py * dt->cf->y_zoom / (float)dt->md->height) +  dt->cf->y_center;
+			x0 = Px - dt->md->width / 2.0;
+			y0 = Py - dt->md->height / 2.0;
+			x0 = x0 / (float)dt->md->width * dt->cf->x_zoom; 
+			y0 = y0 / (float)dt->md->height * dt->cf->y_zoom;
+			x0 = x0 + dt->cf->x_center / (float)dt->md->width;
+			y0 = y0 + dt->cf->y_center / (float)dt->md->height;
 			x = 0.0;
 			y = 0.0;
 			iter = 0;
@@ -114,7 +121,7 @@ void 	Mandelbrot(t_data *dt)
 				x = x_temp;
 				iter++;
 			}
-			fill_pixel(dt->md, Px, Py,  iter *256 *256 +  iter );
+			fill_pixel(dt->md, Px, Py, iter );
 		}
 	}
 }
@@ -125,14 +132,27 @@ void	display(t_data *dt, void (*f)(t_data*))
 	mlx_put_image_to_window(dt->md->mlx, dt->md->win, dt->md->ip->image, 0, 0);
 }
 
+int mouse_hook(int button,int x,int y,t_data *dt)
+{
+	dt->cf->x_center += (x - dt->md->width / 2) * dt->cf->x_zoom;
+	dt->cf->y_center += (y - dt->md->height / 2) * dt->cf->y_zoom;
+	dt->cf->x_zoom *= 0.66;
+	dt->cf->y_zoom *= 0.66;
+	dt->cf->x_move *= 0.66;
+	dt->cf->y_move *= 0.66;
+	display(dt, Julia);
+	return (0);
+}
+
 int			main(int ac, char **av)
 {
 	static t_data	*dt;
 
 	dt = init_data(dt);
 
-	display(dt, Mandelbrot);
+	display(dt, Julia);
 	mlx_key_hook(dt->md->win, call_keys, dt);
+    mlx_mouse_hook(dt->md->win, mouse_hook, dt);
 	mlx_loop(dt->md->mlx);
 	return (0);
 }

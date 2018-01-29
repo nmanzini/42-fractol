@@ -30,18 +30,18 @@ void	call_keys_zoom(int keycode, t_data *dt)
 	if (keycode == 27) 				// -
 	{
 		ft_putendl("-		");
-		dt->cf->x_zoom *= 0.75;
-		dt->cf->y_zoom *= 0.75;
-		dt->cf->x_move *= 0.75;
-		dt->cf->y_move *= 0.75;
+		dt->cf->x_zoom *= 1.33;
+		dt->cf->y_zoom *= 1.33;
+		dt->cf->x_move *= 1.33;
+		dt->cf->y_move *= 1.33;
 	}
 	else if (keycode == 24)			// +
 	{
 		ft_putendl("=		");
-		dt->cf->x_zoom *= 1.5;
-		dt->cf->y_zoom *= 1.5;
-		dt->cf->x_move *= 1.5;
-		dt->cf->y_move *= 1.5;
+		dt->cf->x_zoom *= 0.66;
+		dt->cf->y_zoom *= 0.66;
+		dt->cf->x_move *= 0.66;
+		dt->cf->y_move *= 0.66;
 	}	
 }
 
