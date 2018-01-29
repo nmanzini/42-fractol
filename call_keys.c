@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   call_keys.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/01/29 14:38:43 by nmanzini          #+#    #+#             */
+/*   Updated: 2018/01/29 16:01:05 by nmanzini         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "fractol.h"
 
@@ -45,25 +56,34 @@ void	call_keys_zoom(int keycode, t_data *dt)
 	}	
 }
 
-
 void	call_keys_type(int keycode, t_data *dt)
 {
-	static int flag;
-
-	if (keycode == 44) 				// -
+	if (keycode == 3) 				// F
 	{
-		ft_putendl("/		");
-		if (flag == 0)
+		ft_putendl("F		");
+		if (dt->cf->flag == 0)
 		{
 			ft_putendl("Julia");
 			dt->cf->fractal = Julia;
-			flag = 1;
+			dt->cf->flag++;
 		}
-		else if (flag == 1)
+		else if (dt->cf->flag == 1)
+		{
+			ft_putendl("Tricorn");
+			dt->cf->fractal = Tricorn;
+			dt->cf->flag++;
+		}
+		else if (dt->cf->flag == 2)
+		{
+			ft_putendl("Burning_ship");
+			dt->cf->fractal = Burning_ship;
+			dt->cf->flag++;
+		}
+		else if (dt->cf->flag == 3)
 		{
 			ft_putendl("Mandelbrot");
 			dt->cf->fractal = Mandelbrot;
-			flag = 0;
+			dt->cf->fractal = 0;
 		}
 	}
 }

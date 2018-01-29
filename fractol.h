@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fractol.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/01/29 14:34:10 by nmanzini          #+#    #+#             */
+/*   Updated: 2018/01/29 16:02:10 by nmanzini         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef FRACTOL_H
 # define FRACTOL_H
 
-# include "../MinilibX/elcapitan/mlx.h"
+# include "./minilibx_macos/mlx.h"
 # include "libft/libft.h"
 # include <math.h>
+# include <stdio.h>
 
 typedef struct		s_image_struct
 {
@@ -36,7 +48,11 @@ typedef struct		s_cfg_struct
 	float			y_move;
 	float			x_center;
 	float			y_center;
+	float			x_Julia;
+	float			y_Julia;
 	char			mode;
+	int				flag;
+	int				max_iter;
 	void			(*fractal)();
 }					t_cfg;
 
@@ -48,8 +64,8 @@ typedef struct      s_data_struct
 	char			*name;
 }					t_data;
 
-# define WIDTH		1024
-# define HEIGHT		512
+# define WIDTH		800
+# define HEIGHT		400
 
 # define BLACK		0x00000000
 # define WHITE		0x00FFFFFF
@@ -65,8 +81,9 @@ typedef struct      s_data_struct
 
 void	cfg_setup(t_cfg *cf);
 void	Julia(t_data *dt);
-
+void 	Tricorn(t_data *dt);
 void 	Mandelbrot(t_data *dt);
+void 	Burning_ship(t_data *dt);
 void	display(t_data *dt, void (*f)(t_data*));
 /*
 ** call_keys.c

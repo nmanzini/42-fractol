@@ -1,5 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/01/29 14:34:26 by nmanzini          #+#    #+#             */
+/*   Updated: 2018/01/29 16:11:01 by nmanzini         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "fractol.h"
+
+float 	float_abs(float f)
+{
+	if (f < 0)
+		return (-f);
+	else
+		return (f);
+}
 
 t_mlx	*mlx_data_init_return(t_mlx *md)
 {
@@ -25,6 +44,10 @@ void	cfg_setup(t_cfg *cf)
 	cf->x_move = WIDTH / 2;
 	cf->y_move = HEIGHT / 2;
 	cf->mode = 'z';
+	cf->x_Julia = 0.285;
+	cf->y_Julia = 0.01;
+	cf->max_iter = 1000;
+
 }
 
 t_cfg	*cfg_data_init(t_cfg *cf)
@@ -34,6 +57,7 @@ t_cfg	*cfg_data_init(t_cfg *cf)
 	cf = &actual_cfg;
 	cfg_setup(cf);
 	cf->fractal = Mandelbrot;
+	cf->flag = 0;
 	return (cf);
 }
 
@@ -49,6 +73,18 @@ t_data	*init_data(t_data *dt)
 	return (dt);
 }
 
+void	fractal_color(t_data *dt, int x, int y, int iter)
+{
+	if (iter <250)
+		fill_pixel(dt->md, x, y, iter);
+	else if (iter <500)
+		fill_pixel(dt->md, x, y, iter * 256);
+	else if (iter <750)
+		fill_pixel(dt->md, x, y, iter * 256 * 256);
+	else
+		fill_pixel(dt->md, x, y, BLACK);
+}
+
 void	Julia(t_data *dt)
 {
 	int Px;
@@ -56,7 +92,6 @@ void	Julia(t_data *dt)
 	float x0;
 	float y0;
 	int iter;
-	int max_iter;
 	float x;
 	float x_temp;
 	float y;
@@ -67,8 +102,8 @@ void	Julia(t_data *dt)
 		Py = -1;
 		while (++Py < dt->md->height)
 		{
-			x0 = -0.5;
-			y0 = -0.5;
+			x0 = dt->cf->x_Julia;
+			y0 = dt->cf->y_Julia;
 			x = Px - dt->md->width / 2.0;
 			y = Py - dt->md->height / 2.0;
 			x = x / (float)dt->md->width * dt->cf->x_zoom; 
@@ -76,16 +111,14 @@ void	Julia(t_data *dt)
 			x = x + dt->cf->x_center / (float)dt->md->width;
 			y = y + dt->cf->y_center / (float)dt->md->height;
 			iter = 0;
-			max_iter = 255;
-
-			while (x * x + y * y < 4  &&  iter < max_iter) 
+			while (x * x + y * y < 4  &&  iter < dt->cf->max_iter) 
 			{
 				x_temp = x * x - y * y;
 				y = 2 * x * y + y0;
 				x = x_temp + x0;
 				iter++;
 			}
-			fill_pixel(dt->md, Px, Py, iter );
+			fractal_color(dt, Px, Py, iter );
 		}
 	}
 }
@@ -97,7 +130,6 @@ void 	Mandelbrot(t_data *dt)
 	float x0;
 	float y0;
 	int iter;
-	int max_iter;
 	float x;
 	float x_temp;
 	float y;
@@ -117,15 +149,91 @@ void 	Mandelbrot(t_data *dt)
 			x = 0.0;
 			y = 0.0;
 			iter = 0;
-			max_iter = 255;
-			while (x * x + y * y < 4 && iter < max_iter)
+			while (x * x + y * y < 4 && iter < dt->cf->max_iter)
 			{
 				x_temp = x * x - y * y + x0;
 				y = 2 * x * y + y0;
 				x = x_temp;
 				iter++;
 			}
-			fill_pixel(dt->md, Px, Py, iter );
+			fractal_color(dt, Px, Py, iter );
+		}
+	}
+}
+
+void 	Tricorn(t_data *dt)
+{
+	int Px;
+	int Py;
+	float x0;
+	float y0;
+	int iter;
+	float x;
+	float x_temp;
+	float y;
+
+	Px = -1;
+	while (++Px < dt->md->width)
+	{
+		Py = -1;
+		while (++Py < dt->md->height)
+		{
+			x0 = Px - dt->md->width / 2.0;
+			y0 = Py - dt->md->height / 2.0;
+			x0 = x0 / (float)dt->md->width * dt->cf->x_zoom; 
+			y0 = y0 / (float)dt->md->height * dt->cf->y_zoom;
+			x0 = x0 + dt->cf->x_center / (float)dt->md->width;
+			y0 = y0 + dt->cf->y_center / (float)dt->md->height;
+			x = 0.0;
+			y = 0.0;
+			iter = 0;
+			while (x * x + y * y < 4 && iter < dt->cf->max_iter)
+			{
+				x_temp = x * x - y * y + x0;
+				y = - 2 * x * y + y0;
+				x = x_temp;
+				iter++;
+			}
+			fractal_color(dt, Px, Py, iter );
+		}
+	}
+}
+
+void 	Burning_ship(t_data *dt)
+{
+	int Px;
+	int Py;
+	float x0;
+	float y0;
+	int iter;
+	float x;
+	float x_temp;
+	float y;
+
+	Px = -1;
+	while (++Px < dt->md->width)
+	{
+		Py = -1;
+		while (++Py < dt->md->height)
+		{
+			x0 = Px - dt->md->width / 2.0;
+			y0 = Py - dt->md->height / 2.0;
+			x0 = x0 / (float)dt->md->width * dt->cf->x_zoom; 
+			y0 = y0 / (float)dt->md->height * dt->cf->y_zoom;
+			x0 = x0 + dt->cf->x_center / (float)dt->md->width;
+			y0 = y0 + dt->cf->y_center / (float)dt->md->height;
+			x = 0.0;
+			y = 0.0;
+			iter = 0;
+
+			while (x * x + y * y < 4 && iter < dt->cf->max_iter)
+			{
+				x_temp = x * x - y * y + x0;
+				y = float_abs(2 * x * y + y0);
+				x = float_abs(x_temp);
+				iter++;
+			}
+			fractal_color(dt, Px, Py, iter );
 		}
 	}
 }
@@ -140,6 +248,7 @@ int mouse_hook(int button,int x,int y,t_data *dt)
 {
 	if (dt->cf->mode == 'z')
 	{
+		ft_putendl("zooming");
 		dt->cf->x_center += (x - dt->md->width / 2) * dt->cf->x_zoom;
 		dt->cf->y_center += (y - dt->md->height / 2) * dt->cf->y_zoom;
 		dt->cf->x_zoom *= 0.66;
@@ -147,9 +256,12 @@ int mouse_hook(int button,int x,int y,t_data *dt)
 		dt->cf->x_move *= 0.66;
 		dt->cf->y_move *= 0.66;
 	}
-	else if  (dt->cf->mode == 'p')
+	else if  (dt->cf->mode == 'p' && dt->cf->fractal == Julia)
 	{
-
+		ft_putendl("changing Julia parameters");
+		dt->cf->x_Julia = (x - dt->md->width / 2.0) / dt->md->width * 2.0;
+		dt->cf->y_Julia = (y - dt->md->height / 2.0) / dt->md->height * 2.0;
+		printf("%.2f,%.2f\n",dt->cf->x_Julia,dt->cf->y_Julia);
 	}
 	display(dt, dt->cf->fractal);
 	return (0);
