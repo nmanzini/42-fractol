@@ -36,7 +36,8 @@ typedef struct		s_cfg_struct
 	float			y_move;
 	float			x_center;
 	float			y_center;
-	// void			(*fractal)(t_data*);
+	char			mode;
+	void			(*fractal)();
 }					t_cfg;
 
 typedef struct      s_data_struct
@@ -61,6 +62,8 @@ typedef struct      s_data_struct
 /*
 ** main.c
 */
+
+void	cfg_setup(t_cfg *cf);
 void	Julia(t_data *dt);
 
 void 	Mandelbrot(t_data *dt);

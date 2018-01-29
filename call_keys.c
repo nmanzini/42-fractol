@@ -45,6 +45,56 @@ void	call_keys_zoom(int keycode, t_data *dt)
 	}	
 }
 
+
+void	call_keys_type(int keycode, t_data *dt)
+{
+	static int flag;
+
+	if (keycode == 44) 				// -
+	{
+		ft_putendl("/		");
+		if (flag == 0)
+		{
+			ft_putendl("Julia");
+			dt->cf->fractal = Julia;
+			flag = 1;
+		}
+		else if (flag == 1)
+		{
+			ft_putendl("Mandelbrot");
+			dt->cf->fractal = Mandelbrot;
+			flag = 0;
+		}
+	}
+}
+
+void	call_keys_reset(int keycode, t_data *dt)
+{
+	if (keycode == 15) 				// R
+	{
+		ft_putendl("R		");
+		cfg_setup(dt->cf);
+	}
+}
+
+void	call_keys_mode(int keycode, t_data *dt)
+{
+	if (keycode == 46) 				// M
+	{
+		ft_putstr("M		");
+		if (dt->cf->mode == 'z')
+		{
+			ft_putendl("switch to mouse-parameter mode");
+			dt->cf->mode = 'p';
+		}
+		else if (dt->cf->mode == 'p')
+		{
+			ft_putendl("switch to mouse-zoom mode");
+			dt->cf->mode = 'z';
+		}
+	}
+}
+
 void	call_keys_general(int keycode, t_data *dt)
 {
 	if (keycode == 53)
@@ -65,8 +115,11 @@ void	call_keys_general(int keycode, t_data *dt)
 int		call_keys(int keycode, t_data *dt)
 {
 	call_keys_position(keycode, dt);
-	call_keys_zoom(keycode,dt);
+	call_keys_zoom(keycode, dt);
+	call_keys_type(keycode, dt);
 	call_keys_general(keycode, dt);
-	display(dt, Mandelbrot);
+	call_keys_reset(keycode, dt);
+	call_keys_mode(keycode, dt);
+	display(dt, dt->cf->fractal);
 	return (0);
 }

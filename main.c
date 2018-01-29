@@ -16,18 +16,24 @@ t_mlx	*mlx_data_init_return(t_mlx *md)
 	return (md);
 }
 
+void	cfg_setup(t_cfg *cf)
+{
+	cf->x_zoom = 4;
+	cf->y_zoom = cf->x_zoom / WIDTH * HEIGHT;
+	cf->x_center = 0;
+	cf->y_center = 0;
+	cf->x_move = WIDTH / 2;
+	cf->y_move = HEIGHT / 2;
+	cf->mode = 'z';
+}
+
 t_cfg	*cfg_data_init(t_cfg *cf)
 {
 	static t_cfg	actual_cfg;
 
 	cf = &actual_cfg;
-	cf->x_zoom = 4;
-	cf->y_zoom = cf->x_zoom / WIDTH * HEIGHT;
-	cf->x_center = 0;
-	cf->y_center = 0;
-	cf->x_move = WIDTH / 4;
-	cf->y_move = HEIGHT / 4;
-	cf->fractal = Julia;
+	cfg_setup(cf);
+	cf->fractal = Mandelbrot;
 	return (cf);
 }
 
@@ -55,7 +61,6 @@ void	Julia(t_data *dt)
 	float x_temp;
 	float y;
 
-	ft_putendl("Julia");
 	Px = -1;
 	while (++Px < dt->md->width)
 	{
@@ -97,7 +102,6 @@ void 	Mandelbrot(t_data *dt)
 	float x_temp;
 	float y;
 
-	ft_putendl("Mandelbrot");
 	Px = -1;
 	while (++Px < dt->md->width)
 	{
@@ -134,13 +138,20 @@ void	display(t_data *dt, void (*f)(t_data*))
 
 int mouse_hook(int button,int x,int y,t_data *dt)
 {
-	dt->cf->x_center += (x - dt->md->width / 2) * dt->cf->x_zoom;
-	dt->cf->y_center += (y - dt->md->height / 2) * dt->cf->y_zoom;
-	dt->cf->x_zoom *= 0.66;
-	dt->cf->y_zoom *= 0.66;
-	dt->cf->x_move *= 0.66;
-	dt->cf->y_move *= 0.66;
-	display(dt, Julia);
+	if (dt->cf->mode == 'z')
+	{
+		dt->cf->x_center += (x - dt->md->width / 2) * dt->cf->x_zoom;
+		dt->cf->y_center += (y - dt->md->height / 2) * dt->cf->y_zoom;
+		dt->cf->x_zoom *= 0.66;
+		dt->cf->y_zoom *= 0.66;
+		dt->cf->x_move *= 0.66;
+		dt->cf->y_move *= 0.66;
+	}
+	else if  (dt->cf->mode == 'p')
+	{
+
+	}
+	display(dt, dt->cf->fractal);
 	return (0);
 }
 
@@ -150,7 +161,7 @@ int			main(int ac, char **av)
 
 	dt = init_data(dt);
 
-	display(dt, Julia);
+	display(dt, dt->cf->fractal);
 	mlx_key_hook(dt->md->win, call_keys, dt);
     mlx_mouse_hook(dt->md->win, mouse_hook, dt);
 	mlx_loop(dt->md->mlx);
