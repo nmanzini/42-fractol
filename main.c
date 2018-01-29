@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 14:34:26 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/29 18:28:33 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/29 19:51:12 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	cfg_setup(t_cfg *cf)
 	cf->mode = 'z';
 	cf->x_Julia = 0.285;
 	cf->y_Julia = 0.01;
-	cf->max_iter = 500;
+	cf->max_iter = 512 + 256;
 
 }
 
@@ -73,7 +73,21 @@ t_data	*init_data(t_data *dt)
 	return (dt);
 }
 
-void	fractal_color(t_data *dt, int x, int y, int iter)
+unsigned int rgb(int red, int green, int blue)
+{
+	unsigned int color;
+
+	color = WHITE;
+	if (blue < 256 && green < 256 && red < 255)
+	{
+		color += blue;
+		color += 256 * green;
+		color += 256 * 256 * red;
+	}
+	return (color);
+}
+
+void	fractal_colorXXX(t_data *dt, int x, int y, int iter)
 {
 	int				slices;
 	float			max_local;
@@ -104,6 +118,34 @@ void	fractal_color(t_data *dt, int x, int y, int iter)
 	}
 	fill_pixel(dt->md, x, y, color);
 }
+
+void	fractal_color(t_data *dt, int x, int y, int iter)
+{
+	float			slices;
+	float			max_local;
+	unsigned int	multiplier;
+	unsigned int	color;
+	float 			movements;
+	int 			i;
+	int 			limit;
+
+	slices = 100;
+
+	i = 0;
+
+	color = BLACK;
+	max_local = dt->cf->max_iter / (float) slices;
+
+	while (i < slices)
+	{
+		limit = dt->cf->max_iter / slices * i;
+		if (iter > limit )
+			color = rgb(0,0,(iter - limit)/max_local * 255 );
+		i++;
+	}
+	fill_pixel(dt->md, x, y, color);
+}
+
 
 void	fractal_colora(t_data *dt, int x, int y, int iter)
 {
@@ -316,6 +358,7 @@ int			main(int ac, char **av)
 	display(dt, dt->cf->fractal);
 	mlx_key_hook(dt->md->win, call_keys, dt);
     mlx_mouse_hook(dt->md->win, mouse_hook, dt);
+    // mlx_hook(dt->md->win,,)
 	mlx_loop(dt->md->mlx);
 	return (0);
 }
