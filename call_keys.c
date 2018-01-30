@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 14:38:43 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/30 18:24:50 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/30 18:29:50 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ void	call_keys_zoom(int keycode, t_data *dt)
 	if (keycode == 27)
 	{
 		ft_putendl("-		un-zoom");
-		zoom(dt,'z');
+		zoom(dt, 'z');
 	}
 	else if (keycode == 24)
 	{
 		ft_putendl("=		zoom");
-		zoom(dt,'u');
+		zoom(dt, 'u');
 	}
 }
 

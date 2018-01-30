@@ -6,17 +6,13 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/30 15:25:25 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/30 18:24:29 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/30 18:37:35 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-// 1, 4 zooming
-
-// 2, 5 dezoom
-
-void zoom(t_data *dt, char direction)
+void	zoom(t_data *dt, char direction)
 {
 	if (direction == 'z')
 	{
@@ -36,23 +32,23 @@ void zoom(t_data *dt, char direction)
 	}
 }
 
-void mouse_center(t_data *dt, int x, int y)
+void	mouse_center(t_data *dt, int x, int y)
 {
 	dt->cf->x_center += (x - dt->md->width / 2) * dt->cf->x_zoom;
 	dt->cf->y_center += (y - dt->md->height / 2) * dt->cf->y_zoom;
 }
 
-int	mouse_hook(int bu, int x, int y, t_data *dt)
+int		mouse_hook(int bu, int x, int y, t_data *dt)
 {
 	ft_putnbr(bu);
 	ft_putstr(" mouse	");
-	if (dt->cf->mode == 'z' )
+	if (dt->cf->mode == 'z')
 	{
-		mouse_center(dt,x,y);
+		mouse_center(dt, x, y);
 		if (bu == 1 || bu == 4)
-			zoom(dt,'z');
+			zoom(dt, 'z');
 		else
-			zoom(dt,'u');
+			zoom(dt, 'u');
 	}
 	else if (dt->cf->mode == 'p' && dt->cf->fractal == julia)
 	{

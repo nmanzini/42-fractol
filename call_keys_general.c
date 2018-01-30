@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/30 17:02:37 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/30 17:50:30 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/30 18:53:59 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	call_keys_general(int keycode, t_data *dt)
 
 int		call_keys(int keycode, t_data *dt)
 {
-	// dt->cf->max_iter = dt->cf->max_iter_original;
 	call_keys_position(keycode, dt);
 	call_keys_zoom(keycode, dt);
 	call_keys_type(keycode, dt);
