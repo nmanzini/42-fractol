@@ -6,30 +6,63 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/30 15:25:25 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/30 15:26:04 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/30 18:24:29 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-int mouse_hook(int button,int x,int y,t_data *dt)
+// 1, 4 zooming
+
+// 2, 5 dezoom
+
+void zoom(t_data *dt, char direction)
 {
-	if (dt->cf->mode == 'z')
+	if (direction == 'z')
 	{
 		ft_putendl("zooming");
-		dt->cf->x_center += (x - dt->md->width / 2) * dt->cf->x_zoom;
-		dt->cf->y_center += (y - dt->md->height / 2) * dt->cf->y_zoom;
 		dt->cf->x_zoom *= 0.66;
 		dt->cf->y_zoom *= 0.66;
 		dt->cf->x_move *= 0.66;
 		dt->cf->y_move *= 0.66;
 	}
-	else if  (dt->cf->mode == 'p' && dt->cf->fractal == Julia)
+	else
 	{
-		ft_putendl("changing Julia parameters");
+		ft_putendl("un-zooming");
+		dt->cf->x_zoom *= 1.33;
+		dt->cf->y_zoom *= 1.33;
+		dt->cf->x_move *= 1.33;
+		dt->cf->y_move *= 1.33;
+	}
+}
+
+void mouse_center(t_data *dt, int x, int y)
+{
+	dt->cf->x_center += (x - dt->md->width / 2) * dt->cf->x_zoom;
+	dt->cf->y_center += (y - dt->md->height / 2) * dt->cf->y_zoom;
+}
+
+int	mouse_hook(int bu, int x, int y, t_data *dt)
+{
+	ft_putnbr(bu);
+	ft_putstr(" mouse	");
+	if (dt->cf->mode == 'z' )
+	{
+		mouse_center(dt,x,y);
+		if (bu == 1 || bu == 4)
+			zoom(dt,'z');
+		else
+			zoom(dt,'u');
+	}
+	else if (dt->cf->mode == 'p' && dt->cf->fractal == julia)
+	{
+		ft_putstr("changing julia parameters ");
 		dt->cf->x_Julia = (x - dt->md->width / 2.0) / dt->md->width * 2.0;
 		dt->cf->y_Julia = (y - dt->md->height / 2.0) / dt->md->height * 2.0;
-		printf("%.2f,%.2f\n",dt->cf->x_Julia,dt->cf->y_Julia);
+		ft_putnbr(dt->cf->x_Julia * 1000);
+		ft_putchar(' ');
+		ft_putnbr(dt->cf->y_Julia * 1000);
+		ft_putchar('\n');
 	}
 	display(dt, dt->cf->fractal);
 	return (0);

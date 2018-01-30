@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 14:38:43 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/30 14:54:31 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/30 18:24:50 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,92 +14,67 @@
 
 void	call_keys_position(int keycode, t_data *dt)
 {
-	if (keycode == 123) 				// left
+	if (keycode == 123)
 	{
-		ft_putendl("left	");
+		ft_putendl("left	move left");
 		dt->cf->x_center -= dt->cf->x_move;
 	}
-	else if (keycode == 124)			// right
+	else if (keycode == 124)
 	{
-		ft_putendl("right	");
+		ft_putendl("right	move right");
 		dt->cf->x_center += dt->cf->x_move;
-	}	
-	else if (keycode == 126)			// up
+	}
+	else if (keycode == 126)
 	{
-		ft_putendl("up		");
+		ft_putendl("up		move up");
 		dt->cf->y_center -= dt->cf->y_move;
 	}
-	else if (keycode == 125)			// down
+	else if (keycode == 125)
 	{
-		ft_putendl("down	");
+		ft_putendl("down	move down");
 		dt->cf->y_center += dt->cf->y_move;
 	}
 }
 
 void	call_keys_zoom(int keycode, t_data *dt)
 {
-	if (keycode == 27) 					// -
+	if (keycode == 27)
 	{
-		ft_putendl("-		");
-		dt->cf->x_zoom *= 1.33;
-		dt->cf->y_zoom *= 1.33;
-		dt->cf->x_move *= 1.33;
-		dt->cf->y_move *= 1.33;
+		ft_putendl("-		un-zoom");
+		zoom(dt,'z');
 	}
-	else if (keycode == 24)				// +
+	else if (keycode == 24)
 	{
-		ft_putendl("=		");
-		dt->cf->x_zoom *= 0.66;
-		dt->cf->y_zoom *= 0.66;
-		dt->cf->x_move *= 0.66;
-		dt->cf->y_move *= 0.66;
-	}	
+		ft_putendl("=		zoom");
+		zoom(dt,'u');
+	}
 }
 
 void	call_keys_type(int keycode, t_data *dt)
 {
-	if (keycode == 3) 					// F
+	if (keycode == 3)
 	{
-		ft_putendl("F		");
+		ft_putendl("F		changing fractal");
 		if (dt->cf->f_flag == 0)
-		{
-			ft_putendl("Julia");
-			dt->cf->fractal = Julia;
-			dt->cf->f_flag++;
-		}
+			dt->cf->fractal = julia;
 		else if (dt->cf->f_flag == 1)
-		{
-			ft_putendl("Tricorn");
-			dt->cf->fractal = Tricorn;
-			dt->cf->f_flag++;
-		}
+			dt->cf->fractal = burning_ship;
 		else if (dt->cf->f_flag == 2)
-		{
-			ft_putendl("Burning_ship");
-			dt->cf->fractal = Burning_ship;
-			dt->cf->f_flag++;
-		}
+			dt->cf->fractal = tricorn;
 		else if (dt->cf->f_flag == 3)
 		{
-			ft_putendl("Mandelbrot");
-			dt->cf->fractal = Mandelbrot;
-			dt->cf->f_flag = 0;
+			dt->cf->fractal = mandelbrot;
+			dt->cf->f_flag = -1;
 		}
-	}
-}
-
-void	call_keys_reset(int keycode, t_data *dt)
-{
-	if (keycode == 15) 					// R
-	{
-		ft_putendl("R		");
+		dt->cf->f_flag++;
+		dt->cf->mode = 'z';
 		cfg_setup(dt->cf);
 	}
 }
 
-void	call_keys_mode(int keycode, t_data *dt)
+void	call_keys_mode_reset(int keycode, t_data *dt)
 {
-	if (keycode == 46) 					// M
+	if (keycode == 46)
 	{
 		ft_putstr("M		");
 		if (dt->cf->mode == 'z')
@@ -113,14 +88,18 @@ void	call_keys_mode(int keycode, t_data *dt)
 			dt->cf->mode = 'z';
 		}
 	}
+	if (keycode == 15)
+	{
+		ft_putendl("R		Reset config");
+		cfg_setup(dt->cf);
+	}
 }
 
 void	call_keys_color(int keycode, t_data *dt)
 {
 	if (keycode == 8)
 	{
-		ft_putstr("C		");
-		ft_putstr("changing color to set ");
+		ft_putstr("C		changing color to set ");
 		if (dt->cf->c_flag == 9)
 			dt->cf->c_flag = 0;
 		else
@@ -128,35 +107,4 @@ void	call_keys_color(int keycode, t_data *dt)
 		ft_putnbr(dt->cf->c_flag);
 		ft_putchar(10);
 	}
-}
-
-
-void	call_keys_general(int keycode, t_data *dt)
-{
-	if (keycode == 53)
-	{
-		ft_putendl("ESC      Bye bye!");
-		mlx_destroy_window(dt->md->mlx, dt->md->win);
-		exit(0);
-	}
-	else if (keycode == 50)
-	{
-		ft_putendl("ESC      Bye bye!");
-		mlx_destroy_window(dt->md->mlx, dt->md->win);
-		while (1)
-			;
-	}
-}
-
-int		call_keys(int keycode, t_data *dt)
-{
-	call_keys_position(keycode, dt);
-	call_keys_zoom(keycode, dt);
-	call_keys_type(keycode, dt);
-	call_keys_general(keycode, dt);
-	call_keys_reset(keycode, dt);
-	call_keys_mode(keycode, dt);
-	call_keys_color(keycode, dt);
-	display(dt, dt->cf->fractal);
-	return (0);
 }

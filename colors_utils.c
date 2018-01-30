@@ -6,24 +6,22 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/30 14:16:18 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/30 14:31:07 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/30 16:41:19 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-void	fractal_color(t_data *dt, int x, int y, int iter)
+void			fractal_color(t_data *dt, int x, int y, int iter)
 {
-	//
 	int				slices;
 	int				max_local;
 	unsigned int	color;
 
-
-	fill_pixel(dt->md, x, y, dt->cf->i_to_c[dt->cf->c_flag](dt,iter));
+	fill_pixel(dt->md, x, y, dt->cf->i_to_c[dt->cf->c_flag](dt, iter));
 }
 
-unsigned int rgb(int red, int green, int blue)
+unsigned int	rgb(int red, int green, int blue)
 {
 	unsigned int color;
 

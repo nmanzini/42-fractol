@@ -6,161 +6,131 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/30 14:17:43 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/30 15:23:06 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/30 18:08:08 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-void 	Mandelbrot(t_data *dt)
+void	setup_pi_p0_iter(t_data *dt, int *pi, float *p0, int *iter)
 {
-	int Px;
-	int Py;
-	float x0;
-	float y0;
-	int iter;
-	float x;
-	float x_temp;
-	float y;
+	p0[0] = pi[0] - dt->md->width / 2.0;
+	p0[1] = pi[1] - dt->md->height / 2.0;
+	p0[0] = p0[0] / (float)dt->md->width * dt->cf->x_zoom;
+	p0[1] = p0[1] / (float)dt->md->height * dt->cf->y_zoom;
+	p0[0] = p0[0] + dt->cf->x_center / (float)dt->md->width;
+	p0[1] = p0[1] + dt->cf->y_center / (float)dt->md->height;
+	*iter = -1;
+}
 
-	Px = -1;
-	while (++Px < dt->md->width)
+void	mandelbrot(t_data *dt)
+{
+	int		pi[2];
+	float	p0[2];
+	float	p[2];
+	int		iter;
+	float	x_temp;
+
+	pi[0] = -1;
+	while (++(pi[0]) < dt->md->width)
 	{
-		Py = -1;
-		while (++Py < dt->md->height)
+		pi[1] = -1;
+		while (++(pi[1]) < dt->md->height)
 		{
-			x0 = Px - dt->md->width / 2.0;
-			y0 = Py - dt->md->height / 2.0;
-			x0 = x0 / (float)dt->md->width * dt->cf->x_zoom; 
-			y0 = y0 / (float)dt->md->height * dt->cf->y_zoom;
-			x0 = x0 + dt->cf->x_center / (float)dt->md->width;
-			y0 = y0 + dt->cf->y_center / (float)dt->md->height;
-			x = 0.0;
-			y = 0.0;
-			iter = 0;
-			while (x * x + y * y < 4 && iter < dt->cf->max_iter)
+			setup_pi_p0_iter(dt, pi, p0, &iter);
+			p[0] = 0.0;
+			p[1] = 0.0;
+			while (p[0] * p[0] + p[1] * p[1] < 4 && ++iter < dt->cf->max_iter)
 			{
-				x_temp = x * x - y * y + x0;
-				y = 2 * x * y + y0;
-				x = x_temp;
-				iter++;
+				x_temp = p[0] * p[0] - p[1] * p[1] + p0[0];
+				p[1] = 2 * p[0] * p[1] + p0[1];
+				p[0] = x_temp;
 			}
-			fractal_color(dt, Px, Py, iter );
+			fractal_color(dt, pi[0], pi[1], iter);
 		}
 	}
 }
 
-void	Julia(t_data *dt)
+void	julia(t_data *dt)
 {
-	int Px;
-	int Py;
-	float x0;
-	float y0;
-	int iter;
-	float x;
-	float x_temp;
-	float y;
+	int		pi[2];
+	float	p0[2];
+	float	p[2];
+	int		iter;
+	float	x_temp;
 
-	Px = -1;
-	while (++Px < dt->md->width)
+	pi[0] = -1;
+	while (++(pi[0]) < dt->md->width)
 	{
-		Py = -1;
-		while (++Py < dt->md->height)
+		pi[1] = -1;
+		while (++(pi[1]) < dt->md->height)
 		{
-			x0 = dt->cf->x_Julia;
-			y0 = dt->cf->y_Julia;
-			x = Px - dt->md->width / 2.0;
-			y = Py - dt->md->height / 2.0;
-			x = x / (float)dt->md->width * dt->cf->x_zoom; 
-			y = y / (float)dt->md->height * dt->cf->y_zoom;
-			x = x + dt->cf->x_center / (float)dt->md->width;
-			y = y + dt->cf->y_center / (float)dt->md->height;
-			iter = 0;
-			while (x * x + y * y < 4  &&  iter < dt->cf->max_iter) 
+			setup_pi_p0_iter(dt, pi, p, &iter);
+			p0[0] = dt->cf->x_Julia;
+			p0[1] = dt->cf->y_Julia;
+			while (p[0] * p[0] + p[1] * p[1] < 4 && ++iter < dt->cf->max_iter)
 			{
-				x_temp = x * x - y * y;
-				y = 2 * x * y + y0;
-				x = x_temp + x0;
-				iter++;
+				x_temp = p[0] * p[0] - p[1] * p[1];
+				p[1] = 2 * p[0] * p[1] + p0[1];
+				p[0] = x_temp + p0[0];
 			}
-			fractal_color(dt, Px, Py, iter );
+			fractal_color(dt, pi[0], pi[1], iter);
 		}
 	}
 }
 
-void 	Tricorn(t_data *dt)
+void	burning_ship(t_data *dt)
 {
-	int Px;
-	int Py;
-	float x0;
-	float y0;
-	int iter;
-	float x;
-	float x_temp;
-	float y;
+	int		pi[2];
+	float	p0[2];
+	float	p[2];
+	int		iter;
+	float	x_temp;
 
-	Px = -1;
-	while (++Px < dt->md->width)
+	pi[0] = -1;
+	while (++(pi[0]) < dt->md->width)
 	{
-		Py = -1;
-		while (++Py < dt->md->height)
+		pi[1] = -1;
+		while (++(pi[1]) < dt->md->height)
 		{
-			x0 = Px - dt->md->width / 2.0;
-			y0 = Py - dt->md->height / 2.0;
-			x0 = x0 / (float)dt->md->width * dt->cf->x_zoom; 
-			y0 = y0 / (float)dt->md->height * dt->cf->y_zoom;
-			x0 = x0 + dt->cf->x_center / (float)dt->md->width;
-			y0 = y0 + dt->cf->y_center / (float)dt->md->height;
-			x = 0.0;
-			y = 0.0;
-			iter = 0;
-			while (x * x + y * y < 4 && iter < dt->cf->max_iter)
+			setup_pi_p0_iter(dt, pi, p0, &iter);
+			p[0] = 0.0;
+			p[1] = 0.0;
+			while (p[0] * p[0] + p[1] * p[1] < 4 && ++iter < dt->cf->max_iter)
 			{
-				x_temp = x * x - y * y + x0;
-				y = - 2 * x * y + y0;
-				x = x_temp;
-				iter++;
+				x_temp = p[0] * p[0] - p[1] * p[1] + p0[0];
+				p[1] = float_abs(2 * p[0] * p[1] + p0[1]);
+				p[0] = float_abs(x_temp);
 			}
-			fractal_color(dt, Px, Py, iter );
+			fractal_color(dt, pi[0], pi[1], iter);
 		}
 	}
 }
 
-void 	Burning_ship(t_data *dt)
+void	tricorn(t_data *dt)
 {
-	int Px;
-	int Py;
-	float x0;
-	float y0;
-	int iter;
-	float x;
-	float x_temp;
-	float y;
+	int		pi[2];
+	float	p0[2];
+	float	p[2];
+	int		iter;
+	float	x_temp;
 
-	Px = -1;
-	while (++Px < dt->md->width)
+	pi[0] = -1;
+	while (++(pi[0]) < dt->md->width)
 	{
-		Py = -1;
-		while (++Py < dt->md->height)
+		pi[1] = -1;
+		while (++(pi[1]) < dt->md->height)
 		{
-			x0 = Px - dt->md->width / 2.0;
-			y0 = Py - dt->md->height / 2.0;
-			x0 = x0 / (float)dt->md->width * dt->cf->x_zoom; 
-			y0 = y0 / (float)dt->md->height * dt->cf->y_zoom;
-			x0 = x0 + dt->cf->x_center / (float)dt->md->width;
-			y0 = y0 + dt->cf->y_center / (float)dt->md->height;
-			x = 0.0;
-			y = 0.0;
-			iter = 0;
-
-			while (x * x + y * y < 4 && iter < dt->cf->max_iter)
+			setup_pi_p0_iter(dt, pi, p0, &iter);
+			p[0] = 0.0;
+			p[1] = 0.0;
+			while (p[0] * p[0] + p[1] * p[1] < 4 && ++iter < dt->cf->max_iter)
 			{
-				x_temp = x * x - y * y + x0;
-				y = float_abs(2 * x * y + y0);
-				x = float_abs(x_temp);
-				iter++;
+				x_temp = p[0] * p[0] - p[1] * p[1] + p0[0];
+				p[1] = -2 * p[0] * p[1] + p0[1];
+				p[0] = x_temp;
 			}
-			fractal_color(dt, Px, Py, iter );
+			fractal_color(dt, pi[0], pi[1], iter);
 		}
 	}
 }
