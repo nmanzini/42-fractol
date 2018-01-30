@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/30 15:25:25 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/30 20:33:22 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/30 20:33:51 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,11 @@ int		mouse_hook(int bu, int x, int y, t_data *dt)
 {
 	ft_putnbr(bu);
 	ft_putstr(" mouse		");
-	// if (dt->cf->mode == 'z')
-	// {
-		mouse_center(dt, x, y);
-		if (bu == 1 || bu == 4)
-			zoom(dt, 'z');
-		else
-			zoom(dt, 'u');
-	// }
+	mouse_center(dt, x, y);
+	if (bu == 1 || bu == 4)
+		zoom(dt, 'z');
+	else
+		zoom(dt, 'u');
 	display(dt, dt->cf->fractal);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 14:34:26 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/30 20:30:19 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/30 20:36:39 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@ int		read_input(t_data *dt, int ac, char **av)
 	{
 		if (!ft_strcmp(av[1], "mandelbrot"))
 			dt->cf->fractal = mandelbrot;
-		else if (!ft_strcmp(av[1], "julia"))
+		else if (!ft_strcmp(av[1], "julia") && !(dt->cf->f_flag++))
 			dt->cf->fractal = julia;
-		else if (!ft_strcmp(av[1], "burning_ship"))
+		else if (!ft_strcmp(av[1], "burning_ship") && !(dt->cf->f_flag++))
 			dt->cf->fractal = burning_ship;
-		else if (!ft_strcmp(av[1], "tricorn"))
+		else if (!ft_strcmp(av[1], "tricorn") && !(dt->cf->f_flag++))
 			dt->cf->fractal = tricorn;
 		else
 		{
@@ -76,7 +76,7 @@ int		main(int ac, char **av)
 	display(dt, dt->cf->fractal);
 	mlx_key_hook(dt->md->win, call_keys, dt);
 	mlx_mouse_hook(dt->md->win, mouse_hook, dt);
-	mlx_hook(dt->md->win,MotionNotify,PointerMotionMask,motion_function,dt);
+	mlx_hook(dt->md->win, MotionNotify, PointerMotionMask, motion_function, dt);
 	mlx_loop(dt->md->mlx);
 	return (0);
 }

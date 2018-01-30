@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 14:38:43 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/30 18:59:27 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/30 20:40:13 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,17 @@ void	call_keys_type(int keycode, t_data *dt)
 		}
 		dt->cf->f_flag++;
 		dt->cf->mode = 'z';
+		if (dt->cf->c_flag == 9)
+			dt->cf->c_flag = 0;
+		else
+			dt->cf->c_flag += 1;
 		cfg_setup(dt->cf);
 	}
 }
 
 void	call_keys_mode_reset(int keycode, t_data *dt)
 {
-	if (keycode == 46)
+	if (keycode == 46 && dt->cf->fractal == julia)
 	{
 		ft_putstr("M		");
 		if (dt->cf->mode == 'z')
