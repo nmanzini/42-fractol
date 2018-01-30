@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 14:38:43 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/29 17:50:16 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/30 14:54:31 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,29 +61,29 @@ void	call_keys_type(int keycode, t_data *dt)
 	if (keycode == 3) 					// F
 	{
 		ft_putendl("F		");
-		if (dt->cf->flag == 0)
+		if (dt->cf->f_flag == 0)
 		{
 			ft_putendl("Julia");
 			dt->cf->fractal = Julia;
-			dt->cf->flag++;
+			dt->cf->f_flag++;
 		}
-		else if (dt->cf->flag == 1)
+		else if (dt->cf->f_flag == 1)
 		{
 			ft_putendl("Tricorn");
 			dt->cf->fractal = Tricorn;
-			dt->cf->flag++;
+			dt->cf->f_flag++;
 		}
-		else if (dt->cf->flag == 2)
+		else if (dt->cf->f_flag == 2)
 		{
 			ft_putendl("Burning_ship");
 			dt->cf->fractal = Burning_ship;
-			dt->cf->flag++;
+			dt->cf->f_flag++;
 		}
-		else if (dt->cf->flag == 3)
+		else if (dt->cf->f_flag == 3)
 		{
 			ft_putendl("Mandelbrot");
 			dt->cf->fractal = Mandelbrot;
-			dt->cf->flag = 0;
+			dt->cf->f_flag = 0;
 		}
 	}
 }
@@ -115,6 +115,22 @@ void	call_keys_mode(int keycode, t_data *dt)
 	}
 }
 
+void	call_keys_color(int keycode, t_data *dt)
+{
+	if (keycode == 8)
+	{
+		ft_putstr("C		");
+		ft_putstr("changing color to set ");
+		if (dt->cf->c_flag == 9)
+			dt->cf->c_flag = 0;
+		else
+			dt->cf->c_flag += 1;
+		ft_putnbr(dt->cf->c_flag);
+		ft_putchar(10);
+	}
+}
+
+
 void	call_keys_general(int keycode, t_data *dt)
 {
 	if (keycode == 53)
@@ -140,6 +156,7 @@ int		call_keys(int keycode, t_data *dt)
 	call_keys_general(keycode, dt);
 	call_keys_reset(keycode, dt);
 	call_keys_mode(keycode, dt);
+	call_keys_color(keycode, dt);
 	display(dt, dt->cf->fractal);
 	return (0);
 }

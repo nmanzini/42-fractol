@@ -6,15 +6,20 @@
 #    By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/29 17:51:18 by nmanzini          #+#    #+#              #
-#    Updated: 2018/01/29 14:34:59 by nmanzini         ###   ########.fr        #
+#    Updated: 2018/01/30 15:25:41 by nmanzini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fractol
 
 SRC = 	./main.c 				\
+		./fractals.c			\
 		./call_keys.c			\
 		./mlx_utils.c			\
+		./colors_utils.c		\
+		./colors_palette_1.c	\
+		./colors_palette_2.c	\
+		./mouse.c				\
 
 OBJ = $(SRC:.c=.o)
 

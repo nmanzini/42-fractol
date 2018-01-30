@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 14:34:10 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/29 17:42:29 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/30 15:26:02 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,14 @@ typedef struct		s_cfg_struct
 	float			x_Julia;
 	float			y_Julia;
 	char			mode;
-	int				flag;
+	int				f_flag;
 	int				max_iter;
+
+	int				c_flag;
+	int				c_slices;
+	int				c_s_size;
+	unsigned int	c_inside;
+	unsigned int	(*i_to_c[10])();
 	void			(*fractal)();
 }					t_cfg;
 
@@ -78,13 +84,17 @@ typedef struct      s_data_struct
 /*
 ** main.c
 */
-
+float 	float_abs(float f);
 void	cfg_setup(t_cfg *cf);
+void	display(t_data *dt, void (*f)(t_data*));
+/*
+** fractals.c
+*/
 void	Julia(t_data *dt);
 void 	Tricorn(t_data *dt);
 void 	Mandelbrot(t_data *dt);
 void 	Burning_ship(t_data *dt);
-void	display(t_data *dt, void (*f)(t_data*));
+
 /*
 ** call_keys.c
 */
@@ -98,5 +108,28 @@ void				make_image(t_mlx *md);
 void				img_square(t_mlx *md, unsigned int color);
 void				fill_pixel(t_mlx *md, int x, int y,
 								unsigned int color);
+/*
+** colors_utlis.c
+*/
+unsigned int rgb(int red, int green, int blue);
+void	fractal_color(t_data *dt, int x, int y, int iter);
+
+/*
+** colors_palette_1.c
+*/
+unsigned int iter_to_color_0(t_data *dt,int iter);
+unsigned int iter_to_color_1(t_data *dt,int iter);
+unsigned int iter_to_color_2(t_data *dt,int iter);
+unsigned int iter_to_color_3(t_data *dt,int iter);
+unsigned int iter_to_color_4(t_data *dt,int iter);
+unsigned int iter_to_color_5(t_data *dt,int iter);
+unsigned int iter_to_color_GREY(t_data *dt,int iter);
+unsigned int iter_to_color_RED(t_data *dt,int iter);
+unsigned int iter_to_color_GREEN(t_data *dt,int iter);
+unsigned int iter_to_color_BLUE(t_data *dt,int iter);
+/*
+** mouse.c
+*/
+int mouse_hook(int button,int x,int y,t_data *dt);
 
 #endif
