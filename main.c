@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 14:34:26 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/30 18:52:53 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/30 20:29:00 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,13 @@ int		read_input(t_data *dt, int ac, char **av)
 	}
 	else
 	{
-		if (!ft_strcmp(av[1],"mandelbrot"))
+		if (!ft_strcmp(av[1], "mandelbrot"))
 			dt->cf->fractal = mandelbrot;
-		else if (!ft_strcmp(av[1],"julia"))
+		else if (!ft_strcmp(av[1], "julia"))
 			dt->cf->fractal = julia;
-		else if (!ft_strcmp(av[1],"burning_ship"))
+		else if (!ft_strcmp(av[1], "burning_ship"))
 			dt->cf->fractal = burning_ship;
-		else if (!ft_strcmp(av[1],"tricorn"))
+		else if (!ft_strcmp(av[1], "tricorn"))
 			dt->cf->fractal = tricorn;
 		else
 		{
@@ -55,17 +55,25 @@ int		read_input(t_data *dt, int ac, char **av)
 	}
 }
 
+int		motion_function(int x, int y, t_data *dt)
+{
+	dt->cf->x_julia = (x - dt->md->width / 2.0) / dt->md->width * 2.0;
+	dt->cf->y_julia = (y - dt->md->height / 2.0) / dt->md->height * 2.0;
+	display(dt, dt->cf->fractal);
+	return(0);
+}
+
 int		main(int ac, char **av)
 {
 	static t_data	*dt;
 
 	dt = init_data(dt);
-	if (read_input(dt,ac, av))
+	if (read_input(dt, ac, av))
 		return (1);
 	display(dt, dt->cf->fractal);
 	mlx_key_hook(dt->md->win, call_keys, dt);
 	mlx_mouse_hook(dt->md->win, mouse_hook, dt);
+	mlx_hook(dt->md->win,MotionNotify,PointerMotionMask,motion_function,dt);
 	mlx_loop(dt->md->mlx);
 	return (0);
 }
-

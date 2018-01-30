@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 14:38:43 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/30 18:29:50 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/30 18:59:27 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@ void	call_keys_position(int keycode, t_data *dt)
 {
 	if (keycode == 123)
 	{
-		ft_putendl("left	move left");
+		ft_putendl("left		move left");
 		dt->cf->x_center -= dt->cf->x_move;
 	}
 	else if (keycode == 124)
 	{
-		ft_putendl("right	move right");
+		ft_putendl("right		move right");
 		dt->cf->x_center += dt->cf->x_move;
 	}
 	else if (keycode == 126)
@@ -31,7 +31,7 @@ void	call_keys_position(int keycode, t_data *dt)
 	}
 	else if (keycode == 125)
 	{
-		ft_putendl("down	move down");
+		ft_putendl("down		move down");
 		dt->cf->y_center += dt->cf->y_move;
 	}
 }

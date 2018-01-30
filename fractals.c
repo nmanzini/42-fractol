@@ -66,8 +66,8 @@ void	julia(t_data *dt)
 		while (++(pi[1]) < dt->md->height)
 		{
 			setup_pi_p0_iter(dt, pi, p, &iter);
-			p0[0] = dt->cf->x_Julia;
-			p0[1] = dt->cf->y_Julia;
+			p0[0] = dt->cf->x_julia;
+			p0[1] = dt->cf->y_julia;
 			while (p[0] * p[0] + p[1] * p[1] < 4 && ++iter < dt->cf->max_iter)
 			{
 				x_temp = p[0] * p[0] - p[1] * p[1];
