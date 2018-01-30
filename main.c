@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 14:34:26 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/30 20:29:00 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/30 20:30:19 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,13 @@ int		read_input(t_data *dt, int ac, char **av)
 
 int		motion_function(int x, int y, t_data *dt)
 {
-	dt->cf->x_julia = (x - dt->md->width / 2.0) / dt->md->width * 2.0;
-	dt->cf->y_julia = (y - dt->md->height / 2.0) / dt->md->height * 2.0;
-	display(dt, dt->cf->fractal);
-	return(0);
+	if (dt->cf->mode == 'p' && dt->cf->fractal == julia)
+	{
+		dt->cf->x_julia = (x - dt->md->width / 2.0) / dt->md->width * 2.0;
+		dt->cf->y_julia = (y - dt->md->height / 2.0) / dt->md->height * 2.0;
+		display(dt, dt->cf->fractal);
+	}
+	return (0);
 }
 
 int		main(int ac, char **av)

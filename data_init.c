@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/30 17:07:52 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/30 18:57:20 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/30 20:29:41 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	cfg_setup(t_cfg *cf)
 	cf->x_move = WIDTH / 2;
 	cf->y_move = HEIGHT / 2;
 	cf->mode = 'z';
-
 	cf->max_iter_original = 128;
 	cf->max_iter = 128;
 	cf->c_slices = cf->max_iter / 8;
