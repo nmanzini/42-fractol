@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/30 17:07:52 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/31 12:53:04 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/31 19:30:22 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	cfg_setup(t_cfg *cf)
 	cf->x_move = WIDTH / 2;
 	cf->y_move = HEIGHT / 2;
 	cf->mode = 'z';
-	cf->progressive = 'y';
 	cf->max_iter_original = 64;
 	cf->max_iter = 64;
 	cf->c_slices = cf->max_iter / 8;
@@ -55,6 +54,7 @@ t_cfg	*cfg_data_init(t_cfg *cf)
 	cf->y_julia = 0.01;
 	cf->f_flag = 0;
 	cf->c_flag = 0;
+	cf->progressive = 'n';
 	cf->i_to_c[0] = iter_to_color_0;
 	cf->i_to_c[1] = iter_to_color_1;
 	cf->i_to_c[2] = iter_to_color_2;
@@ -68,14 +68,26 @@ t_cfg	*cfg_data_init(t_cfg *cf)
 	return (cf);
 }
 
+t_str	*str_data_init(t_str *st)
+{
+	static t_str actual_st;
+
+	st = &actual_st;
+	st->x = 18;
+	st->y = 18;
+	return (st);
+}
+
 t_data	*init_data(t_data *dt)
 {
 	static t_data		actual_dt;
 	static t_mlx		*md;
 	static t_cfg		*cf;
+	static t_str		*st;
 
 	dt = &actual_dt;
 	dt->md = mlx_data_init_return(md);
 	dt->cf = cfg_data_init(cf);
+	dt->st = str_data_init(st);
 	return (dt);
 }

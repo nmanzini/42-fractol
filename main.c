@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 14:34:26 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/31 12:54:56 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/31 19:10:58 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,12 @@ float	float_abs(float f)
 		return (f);
 }
 
-void	display(t_data *dt, void (*f)(t_data*))
-{
-	f(dt);
-	mlx_put_image_to_window(dt->md->mlx, dt->md->win, dt->md->ip->image, 0, 0);
-}
-
 int		read_input(t_data *dt, int ac, char **av)
 {
 	if (ac != 2)
 	{
 		ft_putendl("usage: ./fractol fractal_name");
-		ft_putstr("possible fractal_name:");
-		ft_putendl(" mandelbrot, julia, burning_ship, tricorn");
+		ft_putendl("try with: mandelbrot, julia, burning_ship or tricorn");
 		return (1);
 	}
 	else
@@ -48,9 +41,10 @@ int		read_input(t_data *dt, int ac, char **av)
 		else
 		{
 			ft_putendl("Worng fractal_name, try with:");
-			ft_putendl(" mandelbrot, julia, burning_ship, tricorn");
+			ft_putendl("mandelbrot\njulia\nburning_ship\ntricorn");
 			return (1);
 		}
+		dt->st->av1 = av[1];
 		return (0);
 	}
 }
@@ -71,7 +65,7 @@ int		loop_hook(t_data *dt)
 	if (dt->cf->max_iter < 1024 && dt->cf->progressive == 'y')
 	{
 		dt->cf->max_iter *= 2;
-		ft_putstr("         New number of iterations ");
+		ft_putstr("		Calculation iterations: ");
 		ft_putnbr(dt->cf->max_iter);
 		ft_putchar(10);
 		display(dt, dt->cf->fractal);
@@ -86,11 +80,14 @@ int		main(int ac, char **av)
 	dt = init_data(dt);
 	if (read_input(dt, ac, av))
 		return (1);
+	ft_putstr("Opening Fractal : ");
+	ft_putendl(av[1]);
+	ft_putendl("\nKEY		ACTION");
 	display(dt, dt->cf->fractal);
 	mlx_key_hook(dt->md->win, call_keys, dt);
 	mlx_mouse_hook(dt->md->win, mouse_hook, dt);
 	mlx_hook(dt->md->win, MotionNotify, PointerMotionMask, motion_function, dt);
-	mlx_loop_hook(dt->md->mlx,loop_hook,dt);
+	mlx_loop_hook(dt->md->mlx, loop_hook, dt);
 	mlx_loop(dt->md->mlx);
 	return (0);
 }

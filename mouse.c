@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/30 15:25:25 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/31 12:41:16 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/31 17:39:49 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,24 @@
 
 void	zoom(t_data *dt, char direction)
 {
-	if (direction == 'z')
+	if (direction == 'z' && dt->cf->x_zoom > 0.00001)
 	{
 		ft_putendl("zooming");
-		dt->cf->x_zoom *= 0.66;
-		dt->cf->y_zoom *= 0.66;
-		dt->cf->x_move *= 0.66;
-		dt->cf->y_move *= 0.66;
+		dt->cf->x_zoom *= 0.8;
+		dt->cf->y_zoom *= 0.8;
+		dt->cf->x_move *= 0.8;
+		dt->cf->y_move *= 0.8;
 	}
-	else
+	else if (direction == 'u' && dt->cf->x_zoom < 10000)
 	{
 		ft_putendl("un-zooming");
-		dt->cf->x_zoom *= 1.33;
-		dt->cf->y_zoom *= 1.33;
-		dt->cf->x_move *= 1.33;
-		dt->cf->y_move *= 1.33;
+		dt->cf->x_zoom *= 1.2;
+		dt->cf->y_zoom *= 1.2;
+		dt->cf->x_move *= 1.2;
+		dt->cf->y_move *= 1.2;
 	}
+	else
+		ft_putendl("stoped zoomig");
 }
 
 void	mouse_center(t_data *dt, int x, int y)

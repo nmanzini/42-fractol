@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 14:34:10 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/31 12:34:36 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/31 19:49:49 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@
 # include "./minilibx_macos/mlx.h"
 # include "libft/libft.h"
 # include <math.h>
-
-#include "/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers/X11/X.h"
+# include "/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers/X11/X.h"
 
 typedef struct		s_image_struct
 {
@@ -29,6 +28,7 @@ typedef struct		s_str_struct
 {
 	int				x;
 	int				y;
+	char			*av1;
 }					t_str;
 
 typedef struct		s_mlx_struct
@@ -43,8 +43,6 @@ typedef struct		s_mlx_struct
 
 typedef struct		s_cfg_struct
 {
-	int				x_mouse;
-	int				y_mouse;
 	float			x_zoom;
 	float			y_zoom;
 	float			x_move;
@@ -55,6 +53,7 @@ typedef struct		s_cfg_struct
 	float			y_julia;
 	char			mode;
 	char			progressive;
+
 	int				f_flag;
 	int				max_iter;
 	int				max_iter_original;
@@ -67,7 +66,7 @@ typedef struct		s_cfg_struct
 	void			(*fractal)();
 }					t_cfg;
 
-typedef struct      s_data_struct
+typedef struct		s_data_struct
 {
 	t_cfg			*cf;
 	t_str			*st;
@@ -89,9 +88,8 @@ typedef struct      s_data_struct
 ** main.c
 */
 float				float_abs(float f);
-void				display(t_data *dt, void (*f)(t_data*));
 int					read_input(t_data *dt, int ac, char **av);
-int					motion_function(int x, int y,  t_data *dt);
+int					motion_function(int x, int y, t_data *dt);
 /*
 ** data_init.c
 */
@@ -127,19 +125,22 @@ void				make_image(t_mlx *md);
 void				img_square(t_mlx *md, unsigned int color);
 void				fill_pixel(t_mlx *md, int x, int y,
 								unsigned int color);
+void				display(t_data *dt, void (*f)(t_data*));
+void				img_square_dim(t_mlx *md, int *p1, int *p2,
+								unsigned int color);
 /*
 ** colors_utlis.c
 */
-unsigned int	rgb(int red, int green, int blue);
-void			fractal_color(t_data *dt, int x, int y, int iter);
+unsigned int		rgb(int red, int green, int blue);
+void				fractal_color(t_data *dt, int x, int y, int iter);
 /*
 ** colors_palette_1.c
 */
-unsigned int		iter_to_color_0(t_data *dt,int iter);
-unsigned int		iter_to_color_1(t_data *dt,int iter);
-unsigned int		iter_to_color_2(t_data *dt,int iter);
-unsigned int		iter_to_color_3(t_data *dt,int iter);
-unsigned int		iter_to_color_4(t_data *dt,int iter);
+unsigned int		iter_to_color_0(t_data *dt, int iter);
+unsigned int		iter_to_color_1(t_data *dt, int iter);
+unsigned int		iter_to_color_2(t_data *dt, int iter);
+unsigned int		iter_to_color_3(t_data *dt, int iter);
+unsigned int		iter_to_color_4(t_data *dt, int iter);
 /*
 ** colors_palette_2.c
 */
@@ -151,7 +152,14 @@ unsigned int		iter_to_color_blue(t_data *dt, int iter);
 /*
 ** mouse.c
 */
-void 				zoom(t_data *dt,char drection);
+void				zoom(t_data *dt, char drection);
 int					mouse_hook(int button, int x, int y, t_data *dt);
+/*
+** mouse.c
+*/
+void				put_next_str(t_data *dt, char *str);
+void				put_str_and_int(t_data *dt, char *str, int n);
+void				put_str_and_str(t_data *dt, char *str, char *c);
+void				put_strings(t_data *dt);
 
 #endif

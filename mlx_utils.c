@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 14:21:46 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/29 14:38:48 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/31 19:50:04 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,25 @@ void	img_square(t_mlx *md, unsigned int color)
 	mlx_put_image_to_window(md->mlx, md->win, md->ip->image, 0, 0);
 }
 
+void	img_square_dim(t_mlx *md, int *p1, int *p2, unsigned int color)
+{
+	int i;
+	int j;
+
+	i = p1[0];
+	while (i < p2[0])
+	{
+		j = p1[1];
+		while (j < p2[1])
+		{
+			fill_pixel(md, i, j, color);
+			j++;
+		}
+		i++;
+	}
+	mlx_put_image_to_window(md->mlx, md->win, md->ip->image, p1[0], p1[1]);
+}
+
 void	make_image(t_mlx *md)
 {
 	int		bpp;
@@ -45,4 +64,11 @@ void	make_image(t_mlx *md)
 
 	md->ip->image = mlx_new_image(md->mlx, md->width, md->height);
 	md->ip->lst = (int *)mlx_get_data_addr(md->ip->image, &bpp, &s_l, &endian);
+}
+
+void	display(t_data *dt, void (*f)(t_data*))
+{
+	f(dt);
+	mlx_put_image_to_window(dt->md->mlx, dt->md->win, dt->md->ip->image, 0, 0);
+	put_strings(dt);
 }

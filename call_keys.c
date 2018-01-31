@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 14:38:43 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/31 12:50:27 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/31 17:38:54 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,22 @@ void	call_keys_zoom(int keycode, t_data *dt)
 {
 	if (keycode == 27)
 	{
-		ft_putendl("-		un-zoom");
-		zoom(dt, 'z');
+		ft_putstr("-		");
+		zoom(dt, 'u');
 	}
 	else if (keycode == 24)
 	{
-		ft_putendl("=		zoom");
+		ft_putstr("=		");
+		zoom(dt, 'z');
+	}
+	else if (keycode == 69)
+	{
+		ft_putstr("+		");
+		zoom(dt, 'z');
+	}
+	else if (keycode == 78)
+	{
+		ft_putstr("-		");
 		zoom(dt, 'u');
 	}
 }
@@ -91,6 +101,7 @@ void	call_keys_mode_reset(int keycode, t_data *dt)
 			ft_putendl("switch to mouse-zoom mode");
 			dt->cf->mode = 'z';
 		}
+		ft_putchar('\n');
 	}
 	if (keycode == 15)
 	{
