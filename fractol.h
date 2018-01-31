@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 14:34:10 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/30 20:25:50 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/31 12:34:36 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct		s_cfg_struct
 	float			x_julia;
 	float			y_julia;
 	char			mode;
+	char			progressive;
 	int				f_flag;
 	int				max_iter;
 	int				max_iter_original;
@@ -74,8 +75,8 @@ typedef struct      s_data_struct
 	char			*name;
 }					t_data;
 
-# define WIDTH		1200
-# define HEIGHT		900
+# define WIDTH		1024
+# define HEIGHT		1024
 
 # define BLACK		0x00000000
 # define WHITE		0x00FFFFFF

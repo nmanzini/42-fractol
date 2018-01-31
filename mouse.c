@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/30 15:25:25 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/30 20:33:51 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/31 12:41:16 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	mouse_center(t_data *dt, int x, int y)
 
 int		mouse_hook(int bu, int x, int y, t_data *dt)
 {
+	dt->cf->max_iter = dt->cf->max_iter_original;
 	ft_putnbr(bu);
 	ft_putstr(" mouse		");
 	mouse_center(dt, x, y);
