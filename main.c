@@ -6,7 +6,7 @@
 /*   By: nmanzini <nmanzini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/29 14:34:26 by nmanzini          #+#    #+#             */
-/*   Updated: 2018/01/31 19:10:58 by nmanzini         ###   ########.fr       */
+/*   Updated: 2018/01/31 20:07:09 by nmanzini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,15 @@ int		read_input(t_data *dt, int ac, char **av)
 	{
 		if (!ft_strcmp(av[1], "mandelbrot"))
 			dt->cf->fractal = mandelbrot;
-		else if (!ft_strcmp(av[1], "julia") && !(dt->cf->f_flag++))
+		else if (!ft_strcmp(av[1], "julia") && (dt->cf->f_flag = 1))
 			dt->cf->fractal = julia;
-		else if (!ft_strcmp(av[1], "burning_ship") && !(dt->cf->f_flag++))
+		else if (!ft_strcmp(av[1], "burning_ship") && (dt->cf->f_flag = 2))
 			dt->cf->fractal = burning_ship;
-		else if (!ft_strcmp(av[1], "tricorn") && !(dt->cf->f_flag++))
+		else if (!ft_strcmp(av[1], "tricorn") && (dt->cf->f_flag = 3))
 			dt->cf->fractal = tricorn;
 		else
 		{
-			ft_putendl("Worng fractal_name, try with:");
+			ft_putendl("Wrong fractal_name, try with:");
 			ft_putendl("mandelbrot\njulia\nburning_ship\ntricorn");
 			return (1);
 		}
